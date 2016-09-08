@@ -99,11 +99,13 @@ if (staterightTacho != rightlastTachostate) { //compare the tachostate to the la
     }
 }
 
+// PID
+
+
 
 //Decide how to drive based on sensors
 
-
-// Sensor state
+// Read the sensors
 int stateCenter = digitalRead (center);
 int stateCenterLeftS = digitalRead (centerLeftS);
 int stateCenterRightS = digitalRead (centerRightS);
