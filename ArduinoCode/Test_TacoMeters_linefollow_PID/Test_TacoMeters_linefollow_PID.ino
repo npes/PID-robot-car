@@ -86,17 +86,33 @@ void loop() {
 
 stateleftTacho=digitalRead (leftTacho); //read the left tacho
 if (stateleftTacho != leftlastTachostate) { //compare the tachostate to the last tachostate, if change enter the loop
+      if (leftlastTachostate==0) {
+      leftlastTachostate=1;
+    }
+      else {
+      leftlastTachostate=0;
+      }
   if (stateleftTacho==HIGH)  { //if the state is high the Tacho went from low to high
     countleftTacho++; //increment left tacho counter
     Serial.println(countleftTacho); //Serial print the tacho value
-    }
+    Serial.print ("    ");
+  }    
+    
 }
+
 staterightTacho=digitalRead (rightTacho); //read the right tacho
 if (staterightTacho != rightlastTachostate) { //compare the tachostate to the last tachostate, if change enter the loop
+  if (rightlastTachostate==0) {
+      rightlastTachostate=1;
+    }
+      else {
+      rightlastTachostate=0;
+      }
   if (staterightTacho==HIGH)  { //if the state is high the Tacho went from low to high
     countrightTacho++; //increment left tacho counter
     Serial.println(countrightTacho); //Serial print the tacho value
-    }
+    
+  }  
 }
 
 // PID
@@ -306,6 +322,7 @@ else if (stateLeftS==1&&stateCenterLeftS==0&&stateCenter==0&&stateCenterRightS==
     DriveForwardRightWheel(middleR);
     carLight(1, 0, 1, 0);
     }
+
 }
 
 
