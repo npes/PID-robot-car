@@ -61,7 +61,7 @@ void setup() {
   TCCR1B = 0;// same for TCCR1B
   TCNT1  = 0;//initialize counter value to 0
   // set compare match register for 1hz increments
-  OCR1A = 7812 ;// = (16*10^6) / (4*1024) - 1 (must be <65536) 
+  OCR1A = 3906 ;// = (16*10^6) / (4*1024) - 1 (must be <65536) 
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
   // Set CS12 and CS10 bits for 1024 prescaler
@@ -94,7 +94,7 @@ void setup() {
   pinMode(rightTacho, INPUT);
   pinMode(leftTacho, INPUT);
 
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   // moter speed settings
   analogWrite(motorleftSSpeed, old_Duty);
@@ -113,12 +113,12 @@ void loop() {
   RTC = tachR();
   if(PIDFlag == 1){
     old_Duty = PIDFunction(old_Duty);
-    Serial.print("L: ");
-    Serial.print(LTC);
-    Serial.print(" ");
-    Serial.print("R: ");
-    Serial.print(RTC);
-    Serial.println( );
+//    Serial.println("L: ");
+//    Serial.print(LTC);
+//    Serial.print(" ");
+//    Serial.print("R: ");
+//    Serial.println(RTC);
+//    Serial.println( );
   }
 }
 
@@ -185,7 +185,7 @@ ISR(TIMER1_COMPA_vect){
     short int I_errorTL;  // Holds the calculated Integral value for left taco
     float DTL;        // Holds the calculated Differential value for left taco
     short int D_errorTL;  // Holds the derivative error for left taco
-    short const int SetPoint = 20; 
+    short const int SetPoint = 30; 
     short int old_Duty = Duty; // store function input (pwm) for use in function
     
     
@@ -210,15 +210,15 @@ ISR(TIMER1_COMPA_vect){
   
     // the PID SUM Logic
     NewDUTY = old_Duty + (PTL + ITL + DTL);
-  /*
-    Serial.print("Error: ");
-    Serial.println(ErrorTL);
-    Serial.print("old: ");
-    Serial.println(old_Duty);
-    
-    Serial.print("new: ");
-    Serial.println(NewDUTY);
-    */
+
+//    Serial.print("Error: ");
+//    Serial.println(ErrorTL);
+//    Serial.print("old: ");
+    Serial.print(LTC);
+    Serial.print(" ");
+    Serial.println(SetPoint);
+//    Serial.print("new: ");
+//    Serial.println(NewDUTY);
     //load the new duty cycle to the variable of the old so you can adjust for it.
     old_Duty = NewDUTY;
 
