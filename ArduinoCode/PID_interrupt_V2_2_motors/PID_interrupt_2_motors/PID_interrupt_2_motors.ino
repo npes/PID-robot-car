@@ -109,12 +109,11 @@ void setup() {
 }
 
 void loop() {
-  // check left tacho
-  LTC = tachL();
-  // check right tacho
-  RTC = tachR();
+  
+LTC = tachL(); // check left tacho
+RTC = tachR(); // check right tacho
   if(PIDFlag == 1){
-    //old_DutyL = PIDFunctionL(old_DutyL);
+    old_DutyL = PIDFunctionL(old_DutyL);
     old_DutyR = PIDFunctionR(old_DutyR);
     Serial.print("L: ");
     Serial.print(LTC);
@@ -189,7 +188,7 @@ ISR(TIMER1_COMPA_vect){
     short int I_errorTL;  // Holds the calculated Integral value for left taco
     float DTL;        // Holds the calculated Differential value for left taco
     short int D_errorTL;  // Holds the derivative error for left taco
-    short const int SetPoint = 35; 
+    short const int SetPoint = 20; 
     short int old_DutyL = Duty; // store function input (pwm) for use in function
     
     
