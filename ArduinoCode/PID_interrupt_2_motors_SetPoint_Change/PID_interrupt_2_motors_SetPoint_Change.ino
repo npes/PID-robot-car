@@ -40,8 +40,8 @@ and slowR*/
   int rightlastTachostate=0;
 
 //variables for PID functions
-  short int old_DutyL = 55; // starting pwm for both motors
-  short int old_DutyR = 55; // starting pwm for both motors
+  short int old_DutyL = 155; // starting pwm for both motors
+  short int old_DutyR = 155; // starting pwm for both motors
   
   short int NewDUTYL = 0;    // new pwm after PID
   short int NewDUTYR = 0;    // new pwm after PID 
@@ -145,12 +145,11 @@ void setup() {
 }
 
 void loop() {
-<<<<<<< HEAD
   // check tacho functions and store returned value, for use in PID function
   LTC = tachL(); // function for left tacho
   RTC = tachR(); // function for right tacho
 
-  // =======================================================================
+  /*// =======================================================================
   // Sensor state - read sensors and store in variables
   int stateCenter = digitalRead (center);
   int stateCenterLeftS = digitalRead (centerLeftS);
@@ -223,7 +222,7 @@ void loop() {
         SPchangeR = 0;
     break; 
   }
-
+  */
   int SetL = setPointL + SPchangeL;
   int SetR = setPointR + SPchangeR;
   
@@ -235,14 +234,6 @@ void loop() {
     old_DutyL = PIDFunctionL(old_DutyL , SetL);
     old_DutyR = PIDFunctionR(old_DutyR , SetR);
     
-=======
-  
-LTC = tachL(); // check left tacho
-RTC = tachR(); // check right tacho
-  if(PIDFlag == 1){
-    old_DutyL = PIDFunctionL(old_DutyL);
-    old_DutyR = PIDFunctionR(old_DutyR);
->>>>>>> ff9f20231b04e5f91c29f2744d7213d0537a39db
     Serial.print("L: ");
     Serial.print(LTC);
     Serial.print(" ");
@@ -327,18 +318,12 @@ ISR(TIMER1_COMPA_vect){
     short int I_errorTL;  // Holds the calculated Integral value for left taco
     float DTL;        // Holds the calculated Differential value for left taco
     short int D_errorTL;  // Holds the derivative error for left taco
-<<<<<<< HEAD
     int SetPoint = SetPointL; 
     short int old_DutyL = DutyL; // store function input (pwm) for use in function
 
     Serial.print("in: ");
     Serial.print(old_DutyL);
     Serial.print(" ");
-=======
-    short const int SetPoint = 20; 
-    short int old_DutyL = Duty; // store function input (pwm) for use in function
-    
->>>>>>> ff9f20231b04e5f91c29f2744d7213d0537a39db
     
     // Error of Set point vs FB for left taco
     ErrorTL = (SetPoint - PID_TacoL); // setpoint is wished value, FB is output from taco
