@@ -43,7 +43,7 @@ and slowR*/
 
 
 //Variables
-  short int old_Duty = 200; // starting pwm for both motors
+  short int old_Duty = 127; // starting pwm for both motors
   short int NewDUTY = 0; // new pwm after PID 
   int PID_TacoL = 0;
   int PID_TacoR = 0;
@@ -185,7 +185,7 @@ ISR(TIMER1_COMPA_vect){
     short int I_errorTL;  // Holds the calculated Integral value for left taco
     float DTL;        // Holds the calculated Differential value for left taco
     short int D_errorTL;  // Holds the derivative error for left taco
-    short const int SetPoint = 20; 
+    short const int SetPoint = 30; 
     short int old_Duty = Duty; // store function input (pwm) for use in function
     
     
@@ -223,7 +223,7 @@ ISR(TIMER1_COMPA_vect){
     old_Duty = NewDUTY;
 
      // You can also implement a min max for your PWM value before you send it further.
-     
+     Serial.println(old_Duty);
      analogWrite(motorleftSSpeed, NewDUTY);
      return old_Duty;
     

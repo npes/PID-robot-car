@@ -43,7 +43,7 @@ and slowR*/
 
 
 //Variables
-  short int old_Duty = 200; // starting pwm for both motors
+  short int old_Duty = 255; // starting pwm for both motors
   short int NewDUTY = 0; // new pwm after PID 
   int PID_TacoL = 0;
   int PID_TacoR = 0;
@@ -56,12 +56,27 @@ void setup() {
 // enabeling timer 1 for timer interrupt each 0,5 sek
   cli();//stop interrupts
 
+/*
 // set timer1 interrupt at 2Hz
   TCCR1A = 0;// set entire TCCR1A register to 0
   TCCR1B = 0;// same for TCCR1B
   TCNT1  = 0;//initialize counter value to 0
   // set compare match register for 1hz increments
   OCR1A = 3906 ;// = (16*10^6) / (4*1024) - 1 (must be <65536) 
+  // turn on CTC mode
+  TCCR1B |= (1 << WGM12);
+  // Set CS12 and CS10 bits for 1024 prescaler
+  TCCR1B |= (1 << CS12) | (1 << CS10);  
+  // enable timer compare interrupt
+  TIMSK1 |= (1 << OCIE1A);
+*/
+
+// set timer1 interrupt at 8Hz
+  TCCR1A = 0;// set entire TCCR1A register to 0
+  TCCR1B = 0;// same for TCCR1B
+  TCNT1  = 0;//initialize counter value to 0
+  // set compare match register for 1hz increments
+  OCR1A = 1952 ;// = (16*10^6) / (8*1024) - 1 (must be <65536) 
   // turn on CTC mode
   TCCR1B |= (1 << WGM12);
   // Set CS12 and CS10 bits for 1024 prescaler
@@ -113,12 +128,12 @@ void loop() {
   RTC = tachR();
   if(PIDFlag == 1){
     old_Duty = PIDFunction(old_Duty);
-//    Serial.println("L: ");
-//    Serial.print(LTC);
-//    Serial.print(" ");
-//    Serial.print("R: ");
-//    Serial.println(RTC);
-//    Serial.println( );
+    Serial.print("L: ");
+    Serial.print(LTC);
+    Serial.print(" ");
+    Serial.print("R: ");
+    Serial.println(RTC);
+    Serial.println( );
   }
 }
 
@@ -185,7 +200,7 @@ ISR(TIMER1_COMPA_vect){
     short int I_errorTL;  // Holds the calculated Integral value for left taco
     float DTL;        // Holds the calculated Differential value for left taco
     short int D_errorTL;  // Holds the derivative error for left taco
-    short const int SetPoint = 30; 
+    short const int SetPoint = 6; 
     short int old_Duty = Duty; // store function input (pwm) for use in function
     
     
