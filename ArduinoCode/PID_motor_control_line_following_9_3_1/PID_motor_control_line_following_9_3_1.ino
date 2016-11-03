@@ -53,9 +53,14 @@ and slowR*/
   
 //start and stop from bluetooth
   int go=1; //used to determine start or stop from bluetooth buttons. 1=start 0=stop
+
+double loop_time=0;
+double loop_time_calc=0;
   
 /* ======================================= Function prototypes ======================================= */
 // function to check tachos, the time periode / frequencies, used for checking error 
+
+
   void ReadTacho(); 
 
 // Read front sensors/line  
@@ -119,6 +124,8 @@ void loop()
   
   if (go==1) //start has been pressed
   {
+  loop_time=micros();
+  
   // drive forward, using PWM
     analogWrite(motorleftSSpeed, old_DutyL);  // use PWM values for left motor, initial PWM and after changed using PID 
     analogWrite(motorrightSSpeed, old_DutyR); // use PWM values for right motor, initial PWM and after changed using PID
@@ -126,8 +133,8 @@ void loop()
   // Read values from tacho, store freq. value for both in a variable for each
     ReadTacho();   
     
-    Serial.print(EXT_SetPoint);
-    Serial.print(" ");
+//    Serial.print(EXT_SetPoint);
+//    Serial.print(" ");
   // calls PID functions for both motors and store returned result for use next time functuion is called    
     old_DutyL = PIDFunctionL(old_DutyL , EXT_SetPoint); // PID_value er error fra line sensor
     old_DutyR = PIDFunctionR(old_DutyR , EXT_SetPoint); // PID_value er error fra line sensor
@@ -141,6 +148,8 @@ void loop()
     analogWrite(motorleftSSpeed, 0);
     analogWrite(motorrightSSpeed, 0);
   }
+loop_time_calc=micros()-loop_time;
+Serial.println(loop_time_calc);
 }
 
 /* ================================== PID function L =============================== */
@@ -262,16 +271,16 @@ void loop()
     LeftTimePeriod += pulseIn(leftTacho, LOW);
     
     TachoLeftFreq = 1000000/LeftTimePeriod;
-    Serial.print(TachoLeftFreq);
-    Serial.print(" ");
+    //Serial.print(TachoLeftFreq);
+    //Serial.print(" ");
         
     //high and low time periode for right tacho
     RightTimePeriod += pulseIn(rightTacho, HIGH);
     RightTimePeriod += pulseIn(rightTacho, LOW);
     
     TachoRightFreq = 1000000/RightTimePeriod;
-    Serial.print(TachoRightFreq);
-    Serial.print(" ");
+    //Serial.print(TachoRightFreq);
+    //Serial.print(" ");
  
   }
   
